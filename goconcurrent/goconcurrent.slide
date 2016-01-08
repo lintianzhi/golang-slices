@@ -114,7 +114,7 @@ main函数里面的sleep看起来不优雅
 
 * 作业
 
-- 用 https://godoc.org/sync/atomic 修改第五页slide的实现
+- 用 https://godoc.org/sync/atomic 和 https://godoc.org/sync/atomic 修改第五页slide的实现(2个版本)
 - 修改pc1.go，用WaitGroup来等待执行者退出
 - 写一个taskpool的package
     目标：同时最多只能运行n个函数
