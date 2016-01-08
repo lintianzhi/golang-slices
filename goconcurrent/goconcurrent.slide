@@ -57,11 +57,14 @@ channel 是Go里面消息同步的机制，往channel里面丢消息和取消息
     msgChan := make(msgChan, 1)
 
     go func() {
-        for {
+        for i :=0; i<5; i++ {
             msg := generateMsg()
             // 往channel里面丢消息
             msgChan <- msg
         }
+
+        // 关闭msgChan
+        close(msgChan)
     }
 
     for {
@@ -69,6 +72,27 @@ channel 是Go里面消息同步的机制，往channel里面丢消息和取消息
         msg := <- msgChan
         processMsg(msg)
     }
+
+* 各种情况下从channel读消息表现
+
+    c := make(chan bool, 1) 
+    c <- true
+    close(c)
+
+-
+
+    |               | c为空 | c不为空    | c被close
+     --------------- ------  -----------  ----------
+    |     a := <- c | 阻塞  | a == true  | a == false
+     --------------- ------  -----------  ----------
+    | a, ok := <- c | 阻塞  | a == true  | a == false
+    |               |       | ok == true | ok == false
+     --------------- ------  -----------  ----------
+
+PS.
+当channel不为空，但是被close了，此时channel的状态应该是处于 *c不为空*
+只有channel为空并且被close了才算是 *c被close*
+
 
 * select
 
